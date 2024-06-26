@@ -51,7 +51,7 @@ spec:
     # Use exist cloud resources
     cloud_resources: external
     # DUT compute
-    dut_compute: tigon01
+    dut_compute: compute-1
     # Trex config
     trex_lcores: "2-11"
     # testpmd path (for rhel 8.4 vm)

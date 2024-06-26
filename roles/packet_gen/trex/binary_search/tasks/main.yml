@@ -26,7 +26,9 @@
     - pmd_lb is defined
     - pmd_lb in ['ovs', 'user']
 
-#TODO: add --dst-ports {{ trex_dest_ports}} if it works
+- name: Change dest port for trex
+  command: sed -i 's/53/5300/g' /opt/trafficgen/trex-txrx.py
+
 - name: Set Binary Search Command
   set_fact:
     traffic_cmd: >
