@@ -28,6 +28,7 @@
 
 - name: Change dest port for trex
   command: sed -i 's/53/5300/g' /opt/trafficgen/trex-txrx.py
+  become: true
 
 - name: Set Binary Search Command
   set_fact:
