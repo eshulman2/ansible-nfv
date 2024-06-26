@@ -1,34 +1,32 @@
 ---
-- name: copy clouds file from pod for manual run
-  when: manual_run | bool
-  block:
-    - name: Check existence of the clouds.yaml directory
-      stat:
-        path: "{{ clouds_yaml_file_path | dirname }}"
-      register: clouds_yaml_dir
 
-    - name: "Create directory for writing clouds.yaml"
-      file:
-        state: directory
-        path: "{{ clouds_yaml_file_path | dirname }}"
-        mode: '0775'
-      when: not clouds_yaml_dir.stat.exists
+- name: Check existence of the clouds.yaml directory
+  stat:
+    path: "{{ clouds_yaml_file_path | dirname }}"
+  register: clouds_yaml_dir
 
-    - name: Copy clouds.yaml from pod
-      kubernetes.core.k8s_cp:
-        namespace: openstack
-        pod: openstackclient
-        remote_path: .config/openstack/clouds.yaml
-          #    kubeconfig: "{{ kubeconfig }}" 
-        local_path: "{{ clouds_yaml_file_path | dirname }}/clouds.yml"
-        state: from_pod
+- name: "Create directory for writing clouds.yaml"
+  file:
+    state: directory
+    path: "{{ clouds_yaml_file_path | dirname }}"
+    mode: '0775'
+  when: not clouds_yaml_dir.stat.exists
 
-    - name: Copy clouds.yaml from pod
-      kubernetes.core.k8s_cp:
-        namespace: openstack
-        pod: openstackclient
-        remote_path: .config/openstack/secure.yaml
-          #    kubeconfig: "{{ kubeconfig }}"
-        local_path: "{{ clouds_yaml_file_path | dirname }}/secure.yml"
-        state: from_pod
+- name: Copy clouds.yaml from pod
+  kubernetes.core.k8s_cp:
+    namespace: openstack
+    pod: openstackclient
+    remote_path: .config/openstack/clouds.yaml
+      #    kubeconfig: "{{ kubeconfig }}"
+    local_path: "{{ clouds_yaml_file_path | dirname }}/clouds.yml"
+    state: from_pod
+
+- name: Copy clouds.yaml from pod
+  kubernetes.core.k8s_cp:
+    namespace: openstack
+    pod: openstackclient
+    remote_path: .config/openstack/secure.yaml
+      #    kubeconfig: "{{ kubeconfig }}"
+    local_path: "{{ clouds_yaml_file_path | dirname }}/secure.yml"
+    state: from_pod
 

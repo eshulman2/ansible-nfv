@@ -1,6 +1,6 @@
 ---
 
-- hosts: "{{ performance_target | default('conteoller-0') }}"
+- hosts: localhost
   gather_facts: False
   tasks:
     - name: Require Resource Method
@@ -11,7 +11,8 @@
     - name: Prepare Virtual Environment
       include_role:
         name: roles/post_install/openstack_tasks
-        tasks_from: setup_openstack_env
+        tasks_from:
+      when: manual_run | bool
 
     - name: Add Pre-existing Instances To Dynamic Inventory
       include_role:
@@ -41,7 +42,7 @@
         cpu_pinning_cores: "{{ testpmd_lcores }}"
         ssh_reboot: "{{ not osp_reboot | default(False)|bool }}"
 
-- hosts: "{{ performance_target | default('conteoller-0') }}"
+- hosts: localhost
   gather_facts: False
   tasks:
     - block:
@@ -99,7 +100,7 @@
         cpu_pinning_cores: "{{ trex_lcores }}"
         ssh_reboot: "{{ not osp_reboot | default(False)|bool }}"
 
-- hosts: "{{ performance_target | default('conteoller-0') }}"
+- hosts: localhost
   gather_facts: False
   tasks:
     - block:
