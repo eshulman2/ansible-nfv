@@ -44,7 +44,8 @@
   when: '"hypervisor" not in groups["hypervisor"]'
 
 - name: Upload images
-
+  vars:
+    ansible_python_interpreter: "{{ venv_path }}/bin/python"
   openstack.cloud.image:
     cloud: "{{ item.cloud_name | default(cloud_name) }}"
     name: "{{ item.name }}"
