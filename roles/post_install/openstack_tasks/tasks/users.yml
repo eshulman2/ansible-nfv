@@ -3,8 +3,7 @@
 # In order to prevent deletion of the OSP admin user and breaking
 # the environemnt by mistake, skip any manipulation with the "admin" user.
 - name: "Projects {{ resource_state }}"
-  vars:
-    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+
   openstack.cloud.project:
     cloud: "{{ item.cloud_name | default(cloud_name) }}"
     name: "{{ item.project }}"
@@ -15,8 +14,7 @@
   when: item.name != 'admin'
 
 - name: "Users {{ resource_state }}"
-  vars:
-    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+
   openstack.cloud.identity_user:
     cloud: "{{ item.cloud_name | default(cloud_name) }}"
     name: "{{ item.name }}"
@@ -30,8 +28,7 @@
   when: item.name != 'admin'
 
 - name: Add user to role
-  vars:
-    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+
   openstack.cloud.role_assignment:
     cloud: "{{ item.cloud_name | default(cloud_name) }}"
     user: "{{ item.name }}"

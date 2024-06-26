@@ -24,8 +24,7 @@
   when: not containerized|bool
 
 - name: Get the external network id
-  vars:
-    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+
   openstack.cloud.networks_info:
     cloud: "{{ cloud_name }}"
     validate_certs: "{{ validate_certs| default (omit) }}"
@@ -43,8 +42,7 @@
   when: image_for_tempest| bool
 
 - name: Check for the specific flavor id if it's required
-  vars:
-    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+
   openstack.cloud.compute_flavor_info:
     cloud: "{{ cloud_name }}"
     validate_certs: "{{ validate_certs | default (omit) }}"
