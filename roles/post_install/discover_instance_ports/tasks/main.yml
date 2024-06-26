@@ -6,7 +6,7 @@
 
 - name: Gather Instance Facts From OpenStack API
   vars:
-    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+    ansible_python_interpreter: "{{ python_interperter | default(venv_path + '/bin/python') }}"
   openstack.cloud.server_info:
     cloud: "{{ query_cloud }}"
     server: "{{ query_instance | mandatory }}"
@@ -22,7 +22,7 @@
   loop: "{{ discovered_instance['servers'][0]['addresses'] | flatten(levels=1) | sort }}"
 - name: Gather Instance Server Ports
   vars:
-    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+    ansible_python_interpreter: "{{ python_interperter | default(venv_path + '/bin/python') }}"
   openstack.cloud.port_info:
     cloud: "{{ query_cloud }}"
     validate_certs: "{{ cloud_validate_certs }}"
