@@ -27,7 +27,10 @@
     - pmd_lb in ['ovs', 'user']
 
 - name: Change dest port for trex
-  command: sed -i 's/53/5300/g' /opt/trafficgen/trex-txrx.py
+  ansible.builtin.replace:
+    path: /opt/trafficgen/trex-txrx.py
+    regexp: '53'
+    replace: '5300'
   become: true
 
 - name: Set Binary Search Command
@@ -200,22 +203,15 @@
       shell: "ovs-vsctl --version | grep 'Open vSwitch' | sed 's/ovs-vsctl \\(.*\\) //'"
       register: compute_ovs_version
 
-    - name: Check If OVN Is Configured
-      command: 'hiera -c /etc/puppet/hiera.yaml enabled_services'
-      become: True
-      register: deployment_hiera_enabled_services
-
     - name: Retrieve OVN Version
       shell: "podman exec -it ovn_controller ovn-sbctl --version | head -n1 | sed 's/.* \\(.*\\)/\\1/g'"
       become: True
-      when: "'ovn' in deployment_hiera_enabled_services['stdout']"
       register: ovn_version
 
-- name: Fetch puddle/compose from undercloud
-  slurp:
-    src: /home/stack/core_puddle_version
-  register: deployment_core_puddle
-  delegate_to: "{{ groups['undercloud'] | first }}"
+    - name: Fetch puddle/compose from undercloud
+      slurp:
+        src: /etc/rhoso-release
+      register: deployment_core_puddle
 
 - name: Append extra info to performance log for OVS
   lineinfile:
