@@ -28,7 +28,7 @@
 
 - name: Change dest port for trex
   ansible.builtin.replace:
-    path: /opt/trafficgen/trex-txrx.py
+    path: "{{ trafficgen_dir }}/trex-txrx.py"
     regexp: '53'
     replace: '5300'
   become: true
