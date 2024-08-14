@@ -16,6 +16,18 @@
         name: roles/post_install/dynamic_host_inventory
       loop: "{{ dynamic_instances }}"
 
+    - name: get trex vm name
+      set_fact:
+        trex_vm: "{{ item.name }}"
+      when: trex_instances[ dut_group ] | default('trex') in item['group']
+      loop: "{{ dynamic_instances }}"
+
+    - name: get testpmd vm name
+      set_fact:
+        testpmd_vm: "{{ item.name }}"
+      when: dut_group in item['group']
+      loop: "{{ dynamic_instances }}"
+
     - name: Reboot testpmd
       openstack.cloud.server_action:
         cloud: "{{ cloud_name | default('overcloud') }}"
