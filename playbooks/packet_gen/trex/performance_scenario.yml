@@ -16,6 +16,20 @@
         name: roles/post_install/dynamic_host_inventory
       loop: "{{ dynamic_instances }}"
 
+    - name: Reboot testpmd
+      openstack.cloud.server_action:
+        cloud: "{{ cloud_name | default('overcloud') }}"
+        action: reboot_soft
+        server: "{{ testpmd_vm }}"
+        timeout: 300
+
+    - name: Reboot trex
+      openstack.cloud.server_action:
+        cloud: "{{ cloud_name | default('overcloud') }}"
+        action: reboot_soft
+        server: "{{ trex_vm }}"
+        timeout: 300
+
 - hosts: "{{ dut_compute | default(omit) }}"
   become: true
   roles:

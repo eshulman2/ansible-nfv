@@ -26,6 +26,7 @@
     - pmd_lb is defined
     - pmd_lb in ['ovs', 'user']
 
+# TODO: (eshulman) this is a bad WA need to find a better one and remove it
 - name: Change dest port for trex
   ansible.builtin.replace:
     path: "{{ trafficgen_dir }}/trex-txrx.py"
